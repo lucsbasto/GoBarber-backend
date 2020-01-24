@@ -18,7 +18,9 @@ module.exports = {
   rules: {
     "prettier/prettier": "error",
     "class-methods-use-this": "off",
-    "no-params-reassign": "off",
+    "no-param-reassign": ["error", {
+      "props": false
+    }],
     "camelcase": "off",
     "no-unused-vars": ["error", {
       "argsIgnoredPattern": "next"
