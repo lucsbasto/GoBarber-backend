@@ -1,7 +1,9 @@
-import Appointment from '../models/Appointment';
-import File from '../models/File';
 import * as Yup from 'yup';
-import { startOfHour, parseISO, isBefore, parse } from 'date-fns'
+import { startOfHour, parseISO, isBefore, format } from 'date-fns';
+import pt from 'date-fns/locale/pt';
+import Appointment from '../models/Appointment';
+import Notification from '../schemas/Notification';
+import File from '../models/File';
 import User from '../models/User';
 
 class AppointmentController{
@@ -59,7 +61,7 @@ class AppointmentController{
       return res.status(401).json({error: 'You can only create appointments if you are not a provider'})
     }
     /**
-     * Check for past datess
+     * Check for past dates
      */
     const hourStart = startOfHour(parseISO(date));
 
@@ -85,6 +87,20 @@ class AppointmentController{
       provider_id,
       date
     })
+
+    /**
+     * Notify appointment provider
+     */
+
+    const formattedDate = format(
+      hourStart,
+      "'dia' dd 'de' MMMM', às' H:mm'h'",
+      {locale: pt}
+    )
+     await Notification.create({
+       content: `Novo agendamento de ${user.name} para ${formattedDate}`,
+       user: provider_id
+     });
     return res.status(200).json({appointment, date: hourStart})
   }
 }
