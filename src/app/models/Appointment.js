@@ -1,7 +1,6 @@
 import Sequelize, { Model } from 'sequelize'
-
 class Appointment extends Model{
-  static init(sequelize){
+  static init(sequelize) {
     super.init(
       {
         date: Sequelize.DATE,
@@ -20,3 +19,4 @@ class Appointment extends Model{
     this.belongsTo(models.User, {foreignKey: 'provider_id', as: 'provider'});
   }
 }
+export default Appointment;
