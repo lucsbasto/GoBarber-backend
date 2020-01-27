@@ -15,12 +15,8 @@ class Database {
     // variavel sequelize recebida dentro dos models
     this.connection = new Sequelize(databaseConfig);
     models
-    .map(model => {
-      return model.init(this.connection)
-  })
-    .map(model =>{
-      return model.associate && model.associate(this.connection.models)
-    });
+    .map(model => model.init(this.connection))
+    .map(model => model.associate && model.associate(this.connection.models));
   }
 }
 
