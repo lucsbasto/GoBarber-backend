@@ -13,8 +13,6 @@ class Mail {
   }
 
   sendMail(message) {
-    console.log('--->');
-    console.log(', ...mailConfig, ...message', mailConfig, message);
     return this.transporter.sendMail({
       ...mailConfig.default,
       ...message,
