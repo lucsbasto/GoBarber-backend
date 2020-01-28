@@ -17,7 +17,6 @@ class AppointmentController {
         provider: true,
       },
     });
-    console.log(isProvider);
     if (isProvider) {
       return res.status(401).json({
         error: "You are a provider, you haven't appointments notifications",
