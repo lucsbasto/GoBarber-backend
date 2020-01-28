@@ -148,6 +148,16 @@ class AppointmentController {
         error: "You don't have permission to cancel this appointment",
       });
     }
+    if (appointment.canceled_at !== null) {
+      const canceledHour = format(
+        appointment.canceled_at,
+        "MMMM dd yyyy',' H:mm a"
+      );
+      // 24 February 2018
+      return res.status(401).json({
+        error: `This appointment was canceled at ${canceledHour}`,
+      });
+    }
     const dateWith2HoursLess = subHours(appointment.date, 2);
     if (isBefore(dateWith2HoursLess, new Date())) {
       return res.status(401).json({
