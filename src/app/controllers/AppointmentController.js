@@ -1,5 +1,12 @@
 import * as Yup from 'yup';
-import { startOfHour, parseISO, isBefore, format, addMinutes } from 'date-fns';
+import {
+  startOfHour,
+  parseISO,
+  isBefore,
+  format,
+  addMinutes,
+  subHours,
+} from 'date-fns';
 import pt from 'date-fns/locale/pt';
 import { Op } from 'sequelize';
 import Appointment from '../models/Appointment';
@@ -46,7 +53,7 @@ class AppointmentController {
         },
       ],
     });
-    return res.json(appointments);
+    return res.status(200).json(appointments);
   }
 
   async store(req, res) {
@@ -123,6 +130,25 @@ class AppointmentController {
       user: provider_id,
     });
     return res.status(200).json({ appointment, date: hourStart });
+  }
+
+  async delete(req, res) {
+    const appointment = await Appointment.findByPk(req.params.id);
+    if (appointment.user_id !== req.user_id) {
+      return res.status(401).json({
+        error: "You don't have permission to cancel this appointment",
+      });
+    }
+    const dateWith2HoursLess = subHours(appointment.date, 2);
+    if (isBefore(dateWith2HoursLess, new Date())) {
+      return res.status(401).json({
+        error: 'You can only cancel appointments at least 2 hours in advance',
+      });
+    }
+
+    appointment.canceled_at = new Date();
+    appointment.save();
+    return res.status(200).json(appointment);
   }
 }
 
