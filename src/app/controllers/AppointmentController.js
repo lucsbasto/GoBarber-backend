@@ -11,6 +11,18 @@ class AppointmentController {
   async index(req, res) {
     const { limit = 20 } = req.query;
     const { page = 1 } = req.query;
+    const isProvider = await User.findOne({
+      where: {
+        id: req.user_id,
+        provider: true,
+      },
+    });
+    console.log(isProvider);
+    if (isProvider) {
+      return res.status(401).json({
+        error: "You are a provider, you haven't appointments notifications",
+      });
+    }
     const appointments = await Appointment.findAll({
       where: {
         user_id: req.user_id,
