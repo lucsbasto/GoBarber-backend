@@ -1,23 +1,23 @@
-import { model, Schema } from 'mongoose'
+import { model, Schema } from 'mongoose';
 
 const NotificationSchema = Schema(
   {
     content: {
       type: String,
-      required: true
+      required: true,
     },
     user: {
       type: Number,
-      required: true
+      required: true,
     },
     read: {
       type: Number,
       required: true,
-      default: false
-    }
+      default: false,
+    },
   },
   {
-    timestamps: true
+    timestamps: true,
   }
 );
 

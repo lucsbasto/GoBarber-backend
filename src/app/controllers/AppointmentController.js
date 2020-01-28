@@ -1,14 +1,6 @@
 import * as Yup from 'yup';
-import {
-  startOfHour,
-  parseISO,
-  isBefore,
-  format,
-  addMinutes,
-  parse,
-} from 'date-fns';
+import { startOfHour, parseISO, isBefore, format, addMinutes } from 'date-fns';
 import pt from 'date-fns/locale/pt';
-import differenceInMinutes from 'date-fns/differenceInMinutes';
 import { Op } from 'sequelize';
 import Appointment from '../models/Appointment';
 import Notification from '../schemas/Notification';

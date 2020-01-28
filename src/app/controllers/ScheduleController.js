@@ -1,37 +1,36 @@
 import { startOfDay, endOfDay, parseISO } from 'date-fns';
 import { Op } from 'sequelize';
-import User from "../models/User";
+import User from '../models/User';
 import Appointment from '../models/Appointment';
 
-class ScheduleController{
-  async index(req, res){
+class ScheduleController {
+  async index(req, res) {
     const checkUserProvider = await User.findOne({
       where: {
         id: req.user_id,
-        provider: true
-      }
+        provider: true,
+      },
     });
-    if(!checkUserProvider){
-      return res.json({error: 'User is not a provider'});
+    if (!checkUserProvider) {
+      return res.json({ error: 'User is not a provider' });
     }
     const { date } = req.query;
 
     const parsedDate = parseISO(date);
 
     const appointments = await Appointment.findAll({
-      where:{
+      where: {
         provider_id: req.user_id,
         canceled_at: null,
         date: {
-          //[Op.between] coloca o valor desse operador como chave do json
-          [Op.between]:[startOfDay(parsedDate), endOfDay(parsedDate)],
+          //  [Op.between] coloca o valor desse operador como chave do json
+          [Op.between]: [startOfDay(parsedDate), endOfDay(parsedDate)],
         },
       },
-      order: ['date']
+      order: ['date'],
     });
 
     return res.json(appointments);
-
   }
 }
 
