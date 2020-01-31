@@ -45,7 +45,6 @@ class AvailableController {
         setMinutes(setHours(searchDate, hour), minute),
         0
       );
-      console.log(value);
       return {
         time,
         value: format(value, "yyy-MM-dd'T'HH:mm:ssxxx"),
